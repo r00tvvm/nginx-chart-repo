@@ -1,0 +1,72 @@
+# Default values for nginx-ibm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    #service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    #nginx.ingress.kubernetes.io/secure-backends: "true"
+    #nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /nginx
+  hosts:
+    - a89ff01e26f5a11e9ab8f0e230424581-1202621298.us-east-1.elb.amazonaws.com
+  #  - ad2b45c826f5811e9ab8f0e230424581-93245520.us-east-1.elb.amazonaws.com
+  #  - a8458ee316ef411e9ab8f0e230424581-341391709.us-east-1.elb.amazonaws.com
+  #  - a002dd4a36bbe11e995e70269489700c-1871738849.us-east-1.elb.amazonaws.com
+  #  - a396d661e6d2511e995e70269489700c-606949184.us-east-1.elb.amazonaws.com
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  desiredReplicas: 1
+  targetCPUUtilizationPercentage: 50
+  targetMemoryUtilizationPercentage: 50
+
+configmap:
+  enabled: true
+  name: 
+
+persistence:
+  enabled: true
+  annotations: {}
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  size: 1Gi
+

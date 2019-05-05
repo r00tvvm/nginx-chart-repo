@@ -1,0 +1,19 @@
+{{- if .Values.configmap.enabled }}
+apiVersion: v1
+data: 
+  nginx.conf: |
+    events {
+      worker_connections  1024;
+    }
+    http {
+      server {
+        listen 80;
+        location / {
+          return 200 "===============================\n\n   Nginx IBM Challenge !!   \n\n===============================\n";
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: {{ include "nginx-chart.fullname" . }}
+{{- end }}
